@@ -27,7 +27,7 @@ const CategoryFilter = () => {
     { key: 'river', translationKey: 'categorie.river', icon: Fish, label: 'River' },
     { key: 'desert', translationKey: 'categorie.desert', icon: Sun, label: 'Desert' },
     { key: 'city_tourism', translationKey: 'categorie.city_tourism', icon: Building, label: 'City Tours' },
-    { key: 'flight', translationKey: 'categorie.flight', icon: Plane, label: 'Flights' },
+    { key: 'stadium ', translationKey: 'categorie.stadium', icon: Plane, label: 'stadium' },
     { key: 'filters', translationKey: 'categorie.filters', icon: Filter, extraClass: 'border-black', label: 'Filters' },
   ];
 

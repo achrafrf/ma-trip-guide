@@ -2,92 +2,152 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { MapPin, ArrowUpRight, Clock, Users, TrendingUp, BusFront, Car, Trophy } from 'lucide-react';
+import { MapPin, ArrowUpRight, Clock, Users, TrendingUp, BusFront, Car, Trophy, Calendar } from 'lucide-react';
 
 const stadiumsData = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1543351611-58f69d7c1781?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    title: 'ملعب مراكش',
-    location: 'مراكش (15 دقيقة من المدينة القديمة)',
-    difficulty: 'زيارة سهلة',
+    // صورة تعبيرية لملعب حديث مغطى (الرباط)
+    image: 'https://images.unsplash.com/photo-1522778119026-d647f0565c6a?q=80&w=1000&auto=format&fit=crop',
+    title: 'المجمع الرياضي الأمير مولاي عبد الله',
+    location: 'الرباط (العاصمة)',
+    difficulty: 'جاهز 2025',
     difficultyClass: 'bg-green-100 text-green-800',
     difficultyColor: 'bg-green-500',
-    reservation: 'حجز التذاكر',
+    reservation: 'المباراة النهائية',
     reservationColor: 'bg-green-100 text-green-800',
     stats: {
-      distance: 'جولة داخلية',
-      duration: '1-2 ساعات',
-      time: '1-2 ساعات',
-      altitude: '0m',
-      elevation: '0m',
-      gain: '0m↑',
+      capacity: '69,500 مقعد',
+      status: 'تجديد شامل',
+      type: 'مغطى بالكامل',
+      year: 'تسليم 2025',
     },
-    description: 'ملعب متعدد الاستخدامات بسعة 45,000 متفرج. يستضيف مباريات كرة القدم والحفلات الموسيقية والفعاليات الكبرى. تصميم معماري متميز يجمع بين الحداثة والطابع المغربي.',
+    description: 'يخضع لعملية إعادة بناء شاملة ليكون جوهرة ملاعب إفريقيا. تم إزالة المضمار وتغطيته بالكامل بطاقة استيعابية تناهز 70 ألف متفرج، بتصميم عصري عالمي.',
     transport: {
-      bus: 'حافلة خط 1 من المدينة القديمة إلى الملعب (20 دقيقة)',
-      taxi: 'سيارة أجرة (15 دقيقة)',
+      bus: 'الترامواي (محطة المدينة الرياضية) والحافلات الحضرية',
+      taxi: 'متوفر عبر الطريق السريع الحضري (10 د من أكدال)',
     },
-    busRoute: 'حافلة خط 1 من المدينة القديمة إلى الملعب (20 دقيقة)',
-    taxiInfo: 'سيارة أجرة (15 دقيقة)',
-    accessType: 'transport',
-    reservationLink: 'https://example.com/marrakech-stadium',
+    reservationLink: '#',
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    title: 'مركب محمد الخامس',
-    location: 'الدار البيضاء (10 دقيقة من وسط المدينة)',
-    difficulty: 'زيارة سهلة',
-    difficultyClass: 'bg-green-100 text-green-800',
-    difficultyColor: 'bg-green-500',
-    reservation: 'حجز التذاكر',
-    reservationColor: 'bg-green-100 text-green-800',
+    // صورة تعبيرية لملعب طنجة (أزرق/حديث)
+    image: 'https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=1000&auto=format&fit=crop',
+    title: 'ملعب طنجة الكبير (ابن بطوطة)',
+    location: 'طنجة (القرية الرياضية)',
+    difficulty: 'توسعة كبرى',
+    difficultyClass: 'bg-blue-100 text-blue-800',
+    difficultyColor: 'bg-blue-500',
+    reservation: 'نصف النهائي',
+    reservationColor: 'bg-blue-100 text-blue-800',
     stats: {
-      distance: 'جولة داخلية',
-      duration: '1-2 ساعات',
-      time: '1-2 ساعات',
-      altitude: '0m',
-      elevation: '0m',
-      gain: '0m↑',
+      capacity: '75,000 مقعد',
+      status: 'إزالة المضمار',
+      type: 'تصميم عالمي',
+      year: 'جاهز',
     },
-    description: 'أشهر ملعب في المغرب بسعة 67,000 متفرج. مقر نادي الرجاء البيضاوي ويستضيف المباريات الدولية. تحفة معمارية وتاريخية في قلب الدار البيضاء.',
+    description: 'تمت إزالة الحلبة المطاطية وزيادة الطاقة الاستيعابية وإضافة سقف كامل. يعتبر من أجمل الملاعب حالياً بمواصفات "الفيفا" ويطل على مضيق جبل طارق.',
     transport: {
-      bus: 'حافلة خط 10 من وسط المدينة إلى الملعب (15 دقيقة)',
-      taxi: 'سيارة أجرة (10 دقيقة)',
+      bus: 'حافلات ألزا وخدمة النقل المباشر من المطار',
+      taxi: '10 دقائق من مطار ابن بطوطة',
     },
-    busRoute: 'حافلة خط 10 من وسط المدينة إلى الملعب (15 دقيقة)',
-    taxiInfo: 'سيارة أجرة (10 دقيقة)',
-    accessType: 'transport',
-    reservationLink: 'https://example.com/mohammed-v-stadium',
+    reservationLink: '#',
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1518604666860-9ed391f76460?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    title: 'ملعب طنجة',
-    location: 'طنجة (20 دقيقة من وسط المدينة)',
-    difficulty: 'زيارة سهلة',
-    difficultyClass: 'bg-green-100 text-green-800',
-    difficultyColor: 'bg-green-500',
-    reservation: 'حجز التذاكر',
-    reservationColor: 'bg-green-100 text-green-800',
+    // صورة تعبيرية لملعب كازا
+    image: 'https://images.unsplash.com/photo-1556056504-5c7696c4c28d?q=80&w=1000&auto=format&fit=crop',
+    title: 'مركب محمد الخامس',
+    location: 'الدار البيضاء (المعارف)',
+    difficulty: 'تحديث شامل',
+    difficultyClass: 'bg-yellow-100 text-yellow-800',
+    difficultyColor: 'bg-yellow-500',
+    reservation: 'مباريات المجموعات',
+    reservationColor: 'bg-yellow-100 text-yellow-800',
     stats: {
-      distance: 'جولة داخلية',
-      duration: '1-2 ساعات',
-      time: '1-2 ساعات',
-      altitude: '0m',
-      elevation: '0m',
-      gain: '0m↑',
+      capacity: '45,000 مقعد',
+      status: 'تأهيل كامل',
+      type: 'تاريخي',
+      year: 'تحديث 2025',
     },
-    description: 'ملعب عصري بسعة 65,000 متفرج مع إطلالة رائعة على مضيق جبل طارق. يستضيف أهم المباريات الدولية والحفلات العالمية. تحفة معمارية فريدة.',
+    description: 'الملعب الأسطوري للدار البيضاء يخضع لعمليات تأهيل شاملة للمرافق والمدرجات والمنصة الشرفية ليكون جاهزاً لاستقبال كبار ضيوف إفريقيا.',
     transport: {
-      bus: 'حافلة خط 5 من وسط المدينة إلى الملعب (25 دقيقة)',
-      taxi: 'سيارة أجرة (20 دقيقة)',
+      bus: 'الترامواي (محطة المركب) والحافلات',
+      taxi: 'وسط المدينة (حي المعارف)',
     },
-    busRoute: 'حافلة خط 5 من وسط المدينة إلى الملعب (25 دقيقة)',
-    taxiInfo: 'سيارة أجرة (20 دقيقة)',
-    accessType: 'transport',
-    reservationLink: 'https://example.com/tangier-stadium',
+    reservationLink: '#',
+  },
+  {
+    id: 4,
+    // صورة تعبيرية لملعب مراكش (ألوان حمراء)
+    image: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1000&auto=format&fit=crop',
+    title: 'ملعب مراكش الكبير',
+    location: 'مراكش (طريق الدار البيضاء)',
+    difficulty: 'تأهيل',
+    difficultyClass: 'bg-orange-100 text-orange-800',
+    difficultyColor: 'bg-orange-500',
+    reservation: 'مباريات المجموعات',
+    reservationColor: 'bg-orange-100 text-orange-800',
+    stats: {
+      capacity: '45,000 مقعد',
+      status: 'تجويد المرافق',
+      type: 'طابع مغربي',
+      year: 'جاهز',
+    },
+    description: 'تحفة معمارية تمزج بين الحداثة والأصالة المغربية. يخضع لتحسينات تشمل المداخل ومحيط الملعب والمرافق الداخلية لاستقبال الجماهير.',
+    transport: {
+      bus: 'خطوط الحافلات الخاصة (ألزا) أثناء المباريات',
+      taxi: '15 دقيقة من جيليز',
+    },
+    reservationLink: '#',
+  },
+  {
+    id: 5,
+    // صورة تعبيرية لملعب أكدير
+    image: 'https://images.unsplash.com/photo-1516054717294-1645f5218d07?q=80&w=1000&auto=format&fit=crop',
+    title: 'ملعب أدرار',
+    location: 'أكادير (شرق المدينة)',
+    difficulty: 'تحديث',
+    difficultyClass: 'bg-red-100 text-red-800',
+    difficultyColor: 'bg-red-500',
+    reservation: 'ربع النهائي',
+    reservationColor: 'bg-red-100 text-red-800',
+    stats: {
+      capacity: '45,000 مقعد',
+      status: 'تغطية السقف',
+      type: 'تصميم أمازيغي',
+      year: 'تجديد 2025',
+    },
+    description: 'يتميز بتصميمه المستوحى من جبال الأطلس. الأشغال تهم تحسين الإنارة وتغطية الملعب وتحديث غرف الملابس والمنصة الصحفية.',
+    transport: {
+      bus: 'حافلات النقل الحضري (خط 22)',
+      taxi: '20 دقيقة من المنطقة السياحية',
+    },
+    reservationLink: '#',
+  },
+  {
+    id: 6,
+    // صورة تعبيرية لملعب فاس
+    image: 'https://images.unsplash.com/photo-1590634628292-0545f1b5377f?q=80&w=1000&auto=format&fit=crop',
+    title: 'المركب الرياضي بفاس',
+    location: 'فاس (طريق صفرو)',
+    difficulty: 'إزالة المضمار',
+    difficultyClass: 'bg-emerald-100 text-emerald-800',
+    difficultyColor: 'bg-emerald-500',
+    reservation: 'مباريات المجموعات',
+    reservationColor: 'bg-emerald-100 text-emerald-800',
+    stats: {
+      capacity: '45,000 مقعد',
+      status: 'تصميم جديد',
+      type: 'تراثي عصري',
+      year: 'تسليم 2025',
+    },
+    description: 'تغيير جذري للملعب بإزالة مضمار ألعاب القوى وتقريب المدرجات وتغطيته بالكامل، مع الحفاظ على اللمسة الفاسية الأصيلة في التصميم الخارجي.',
+    transport: {
+      bus: 'خطوط سيتي باص فاس',
+      taxi: '15 دقيقة من وسط المدينة',
+    },
+    reservationLink: '#',
   }
 ];
 
@@ -102,7 +162,7 @@ const MoroccanStadiums = ({ onTrailSelect }) => {
     <div className="mb-8">
       <h3 className="text-2xl font-semibold text-purple-800 mb-4 border-l-4 border-purple-600 pl-3 flex items-center gap-2">
         <Trophy className="w-6 h-6" />
-        الملاعب الرياضية في المغرب
+        ملاعب كأس أمم أفريقيا 2025
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {stadiumsData.map((stadium) => (
@@ -149,27 +209,31 @@ const MoroccanStadiums = ({ onTrailSelect }) => {
             <div className="p-6 pt-0 flex-grow flex flex-col">
               <div className="mb-4">
                 <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-                  <div className="flex items-center gap-2">
-                    <ArrowUpRight className="w-4 h-4 flex-shrink-0 text-purple-600" />
-                    <span className="text-base font-semibold text-gray-900">{stadium.stats.distance}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 flex-shrink-0 text-purple-600" />
-                    <span className="text-base font-semibold text-gray-900">{stadium.stats.duration}</span>
-                  </div>
+                  {/* Capacity */}
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 flex-shrink-0 text-purple-600" />
-                    <span className="text-base font-semibold text-gray-900">جماهيري</span>
+                    <span className="text-sm font-semibold text-gray-900">{stadium.stats.capacity}</span>
                   </div>
+                   {/* Status */}
                   <div className="flex items-center gap-2">
                     <TrendingUp className="w-4 h-4 flex-shrink-0 text-purple-600" />
-                    <span className="text-base font-semibold text-gray-900">{stadium.stats.gain}</span>
+                    <span className="text-sm font-semibold text-gray-900">{stadium.stats.status}</span>
+                  </div>
+                   {/* Type */}
+                  <div className="flex items-center gap-2">
+                    <ArrowUpRight className="w-4 h-4 flex-shrink-0 text-purple-600" />
+                    <span className="text-sm font-semibold text-gray-900">{stadium.stats.type}</span>
+                  </div>
+                   {/* Year */}
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 flex-shrink-0 text-purple-600" />
+                    <span className="text-sm font-semibold text-gray-900">{stadium.stats.year}</span>
                   </div>
                 </div>
               </div>
               <p className="text-sm text-gray-600 line-clamp-3 mb-4 leading-relaxed">{stadium.description}</p>
               <div className="mt-auto">
-                <h5 className="text-sm font-semibold mb-2 text-gray-900">كيفية الوصول</h5>
+                <h5 className="text-sm font-semibold mb-2 text-gray-900">وسائل النقل</h5>
                 <div className="space-y-2 text-sm">
                   <div className="flex items-start gap-2">
                     <div className="mt-0.5">

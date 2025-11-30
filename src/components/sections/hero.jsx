@@ -17,7 +17,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="fixed top-0 left-0 w-full h-screen overflow-hidden z-0">
+    <section id="hero" className="fixed top-0 left-0 w-full h-screen overflow-hidden z-0">
       
       {/* Load Font Globally */}
       <style jsx global>{`
@@ -35,7 +35,7 @@ const HeroSection = () => {
         className="absolute inset-0 w-full h-full object-cover scale-105"
       >
         <source
-          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/8e731e1f-39f2-40d4-a44c-c113637ed114/generated_videos/cinematic-aerial-footage-of-stunning-mor-cf19e5aa-20251126210253.mp4"
+          src="/background video.mp4"
           type="video/mp4"
         /> 
       </video>

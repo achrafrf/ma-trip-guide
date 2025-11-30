@@ -110,7 +110,7 @@ const FilteredSections = ({ onTrailSelect }: FilteredSectionsProps) => {
           )}
 
           {/* عندما يتم اختيار فئة "الطيران" */}
-          {activeCategory === 'flight' && (
+          {activeCategory === 'stadium' && (
             <motion.section {...fadeInUp} className="mb-12">
               <MoroccanStadiums onTrailSelect={onTrailSelect} />
             </motion.section>

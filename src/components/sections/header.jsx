@@ -1,10 +1,9 @@
 'use client';
 
-import { Heart, DollarSign, HandHeart, Linkedin, Globe, ChevronDown } from 'lucide-react';
+import { HandHeart, Linkedin, Globe, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/contexts/language-context';
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-
 
 const Header = () => {
   const { language, setLanguage } = useLanguage();
@@ -32,47 +31,69 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="fixed top-4 w-full flex justify-between items-center px-4 z-50">
-      <div className="flex items-center gap-2 flex-wrap">
+    // top-2 f mobile, top-4 f pc (sm)
+    <header className="fixed top-2 sm:top-4 w-full flex justify-between items-center px-2 sm:px-4 z-50 pointer-events-none">
+      
+      {/* LEFT SIDE: Buttons (Pointer events auto bach ykhedmo hit header fih pointer-events-none) */}
+      <div className="flex items-center gap-2 pointer-events-auto">
        <Link href="/donate">
-  <button
-    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 text-sm font-bold text-black shadow-sm transition-transform hover:scale-105"
-  >
-    <HandHeart className="w-4 h-4 text-blue-600" />
-    Donate
-  </button>
-</Link>
+          <button
+            className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm font-bold text-black shadow-sm transition-transform hover:scale-105"
+          >
+            <HandHeart className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
+            <span>Donate</span>
+          </button>
+        </Link>
         <a
           href="https://www.linkedin.com/in/achraf-rafiq/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 font-bold transition-all hover:scale-105 bg-white/90 px-3 py-1.5 rounded-md shadow-sm border border-purple-600/20 hover:bg-white hover:shadow-md"
+          className="flex items-center gap-2 font-bold transition-all hover:scale-105 bg-white/90 px-2 py-1 sm:px-3 sm:py-1.5 rounded-md shadow-sm border border-purple-600/20 hover:bg-white hover:shadow-md h-8 sm:h-auto"
         >
+          {/* Text mkhabbi f mobile (hidden), kayban f tablet/pc (sm:inline) */}
           <span
-            className="hidden sm:inline text-lg"
+            className="hidden sm:inline text-sm sm:text-lg"
             style={{ fontFamily: 'var(--font-brand, sans-serif)' }}
           >
             Design by Achraf
           </span>
-          <div className="flex items-center justify-center w-7 h-7">
+          <div className="flex items-center justify-center w-5 h-5 sm:w-7 sm:h-7">
             <Linkedin fill="#0A66C2" stroke="none" className="h-full w-full" />
           </div>
         </a>
       </div>
+
+      {/* CENTER LOGO - Absolute Position */}
+      {/* Logo sghir f mobile (text-3xl) w kbir f pc (md:text-5xl) */}
+      <h5 className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center font-brush drop-shadow-2xl -rotate-2 break-words whitespace-nowrap pointer-events-auto mt-0.5 sm:mt-0">
+        <img 
+            src="/star.png" 
+            alt="Moroccan Star" 
+            // Tswira katbda sghira (w-6) w katkber (sm:w-10)
+            className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain"
+        />
+        <div className="flex items-center text-3xl sm:text-4xl md:text-5xl lg:text-4xl">
+            <span className="text-[#C1272D] drop-shadow-md">M</span>
+            <span className="text-white">T</span>
+            <span className="text-[#006233] drop-shadow-md">G</span>
+        </div>
+      </h5>
       
-      <div className="relative" ref={dropdownRef}>
+      {/* RIGHT SIDE: Language Dropdown */}
+      <div className="relative pointer-events-auto" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 bg-white/90 hover:bg-white border border-input h-10 px-4 py-2 text-sm shadow-sm hover:shadow-md transition-all"
+          className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 bg-white/90 hover:bg-white border border-input h-8 px-2 sm:h-10 sm:px-4 text-xs sm:text-sm shadow-sm hover:shadow-md transition-all"
         >
-          <Globe className="w-4 h-4" />
-          <span className="text-base">{currentLanguage.flag}</span>
+          <Globe className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span className="text-sm sm:text-base">{currentLanguage.flag}</span>
+          {/* Label mkhabbi f mobile */}
           <span className="hidden sm:inline">{currentLanguage.label}</span>
-          <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </button>
 
         {isOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-[#B8BCC2] overflow-hidden">
+          <div className="absolute right-0 mt-2 w-40 sm:w-48 bg-white rounded-md shadow-lg border border-[#B8BCC2] overflow-hidden">
             {languages.map((lang) => (
               <button
                 key={lang.code}
@@ -80,13 +101,13 @@ const Header = () => {
                   setLanguage(lang.code);
                   setIsOpen(false);
                 }}
-                className={`w-full flex items-center space-x-2 px-4 py-2.5 text-sm transition-colors ${
+                className={`w-full flex items-center space-x-2 px-3 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm transition-colors ${
                   language === lang.code
                     ? 'bg-[#2D5016] text-white font-semibold'
                     : 'text-[#6B7280] hover:bg-[#F5F5F5]'
                 }`}
               >
-                <span className="text-base">{lang.flag}</span>
+                <span className="text-sm sm:text-base">{lang.flag}</span>
                 <span>{lang.label}</span>
               </button>
             ))}
