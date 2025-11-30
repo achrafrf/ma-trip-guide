@@ -15,7 +15,7 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 const translations = {
   en: {
     // Footer
-    'footer.title': 'Los Coihues Trail Guide',
+    'footer.title': 'MA TRIP GUIDE',
     'footer.description': 'Your complete guide to discovering the trails and natural wonders of Patagonia.',
     'footer.quickLinks': 'Quick Links',
     'footer.dayHikes': 'Day Hikes',
@@ -30,6 +30,17 @@ const translations = {
     // Header
     'header.appMaps': 'MAPS APP',
     'header.designBy': 'Design by Alan',
+    // categories
+  'categorie.title': 'Categories',
+  'categorie.mountains': 'Mountainous Areas',
+  'categorie.forest': 'Forests',
+  'categorie.sea': 'Sea',
+  'categorie.river': 'River',
+  'categorie.desert': 'Desert',
+  'categorie.city_tourism': 'City Tourism',
+  'categorie.flight': 'Flights',
+  'categorie.filters': 'Filters',
+  'categorie.all': 'All',
   },
   es: {
     // Footer
@@ -48,6 +59,17 @@ const translations = {
     // Header
     'header.appMaps': 'APP MAPAS',
     'header.designBy': 'Diseñado por Alan',
+     // categories
+ 'categorie.title': 'Categorías',
+  'categorie.mountains': 'Zonas Montañosas',
+  'categorie.forest': 'Bosques',
+  'categorie.sea': 'Mar',
+  'categorie.river': 'Río',
+  'categorie.desert': 'Desierto',
+  'categorie.city_tourism': 'Turismo en la Ciudad',
+  'categorie.flight': 'Vuelos',
+  'categorie.filters': 'Filtros',
+  'categorie.all': 'Todos',
   },
   fr: {
     // Footer
@@ -66,6 +88,17 @@ const translations = {
     // Header
     'header.appMaps': 'APPLICATION CARTES',
     'header.designBy': 'Conçu par Alan',
+    // categories
+    'categorie.title': 'Catégories',
+  'categorie.mountains': 'Zones Montagneuses',
+  'categorie.forest': 'Forêts',
+  'categorie.sea': 'Mer',
+  'categorie.river': 'Rivière',
+  'categorie.desert': 'Désert',
+  'categorie.city_tourism': 'Tourisme en Ville',
+  'categorie.flight': 'Vols',
+  'categorie.filters': 'Filtres',
+  'categorie.all': 'Tous',
   },
   ar: {
     // Footer
@@ -84,6 +117,17 @@ const translations = {
     // Header
     'header.appMaps': 'تطبيق الخرائط',
     'header.designBy': 'تصميم آلان',
+    // categories
+    'categorie.title': 'التصنيفات',
+  'categorie.mountains': 'مناطق جبلية',
+  'categorie.forest': 'مناطق غابوية',
+  'categorie.sea': 'البحر',
+  'categorie.river': 'الواد',
+  'categorie.desert': 'الصحراء',
+  'categorie.city_tourism': 'مناطق سياحية داخل المدينة',
+  'categorie.flight': 'الطيران',
+  'categorie.filters': 'فلاتر',
+  'categorie.all': 'الكل',
   }
 };
 

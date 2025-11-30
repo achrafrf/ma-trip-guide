@@ -78,7 +78,7 @@ export default function Footer() {
                 className="flex items-center space-x-2 text-sm text-[#6B7280] hover:text-[#4A7C2C] transition-colors"
               >
                 <Mail className="w-4 h-4" />
-                <span>info@loscoihues.com</span>
+                <span>itsachrafrafiq@gmail.com</span>
               </a>
             </div>
             
@@ -123,7 +123,7 @@ export default function Footer() {
         <div className="pt-8 border-t border-[#B8BCC2]">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-sm text-[#6B7280]">
-              © {new Date().getFullYear()} Los Coihues. {t('footer.rights')}
+              © {new Date().getFullYear()} achraf rafiq . {t('footer.rights')}
             </p>
             <div className="flex space-x-6">
               <a href="#" className="text-sm text-[#6B7280] hover:text-[#4A7C2C] transition-colors">

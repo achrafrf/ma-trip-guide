@@ -61,6 +61,7 @@ const hikesData = [
   },
 ];
 
+
 const DayHikesBus = () => {
   return (
     <div className="mb-8">

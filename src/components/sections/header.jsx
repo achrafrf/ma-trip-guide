@@ -1,8 +1,10 @@
 'use client';
 
-import { Download, Map, Linkedin, Globe, ChevronDown } from 'lucide-react';
+import { Heart, DollarSign, HandHeart, Linkedin, Globe, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/contexts/language-context';
 import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
+
 
 const Header = () => {
   const { language, setLanguage } = useLanguage();
@@ -32,15 +34,16 @@ const Header = () => {
   return (
     <header className="fixed top-4 w-full flex justify-between items-center px-4 z-50">
       <div className="flex items-center gap-2 flex-wrap">
-        <button
-          className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 text-sm font-bold text-black shadow-sm transition-transform hover:scale-105"
-        >
-          <Download />
-          <Map />
-          APP MAPAS
-        </button>
+       <Link href="/donate">
+  <button
+    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 text-sm font-bold text-black shadow-sm transition-transform hover:scale-105"
+  >
+    <HandHeart className="w-4 h-4 text-blue-600" />
+    Donate
+  </button>
+</Link>
         <a
-          href="https://www.linkedin.com/in/alan-chismechian/"
+          href="https://www.linkedin.com/in/achraf-rafiq/"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 font-bold transition-all hover:scale-105 bg-white/90 px-3 py-1.5 rounded-md shadow-sm border border-purple-600/20 hover:bg-white hover:shadow-md"
@@ -49,7 +52,7 @@ const Header = () => {
             className="hidden sm:inline text-lg"
             style={{ fontFamily: 'var(--font-brand, sans-serif)' }}
           >
-            Design by Alan
+            Design by Achraf
           </span>
           <div className="flex items-center justify-center w-7 h-7">
             <Linkedin fill="#0A66C2" stroke="none" className="h-full w-full" />

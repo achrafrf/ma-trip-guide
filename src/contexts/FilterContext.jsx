@@ -13,7 +13,7 @@ export const useFilter = () => {
 };
 
 export const FilterProvider = ({ children }) => {
-  const [activeCategory, setActiveCategory] = useState('Todos');
+  const [activeCategory, setActiveCategory] = useState('all');
 
   return (
     <FilterContext.Provider value={{ activeCategory, setActiveCategory }}>
