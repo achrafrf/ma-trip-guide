@@ -44,49 +44,49 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
 
       {/* Centered Content */}
-      <div className="relative z-10 flex items-center justify-center h-full px-4">
-        <div className="text-center">
-          <div className="relative inline-block">
+      <div className="relative z-10 flex items-center justify-center h-full px-4 sm:px-6">
+        <div className="text-center w-full max-w-5xl">
+          <div className="relative inline-block w-full">
             
-            {/* Main Title - Updated Font & Colors */}
+            {/* Main Title - Updated Font & Colors & Responsive Sizes */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className="text-6xl md:text-8xl font-brush tracking-wider drop-shadow-2xl whitespace-nowrap mb-6 transform -rotate-2">
+              <h1 className="text-4xl sm:text-6xl md:text-8xl font-brush tracking-wider drop-shadow-2xl mb-4 md:mb-6 transform -rotate-2 break-words sm:whitespace-nowrap">
                 <span className="text-[#C1272D] drop-shadow-md">MA</span> 
-                <span className="text-white mx-4">TRIP</span> 
+                <span className="text-white mx-2 sm:mx-4">TRIP</span> 
                 <span className="text-[#006233] drop-shadow-md">GUIDE</span>
               </h1>
             </motion.div>
 
-            {/* Subtitle */}
+            {/* Subtitle - Responsive Text Size */}
             <motion.p 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="text-xl md:text-3xl text-white/90 italic mb-12 tracking-wide drop-shadow-lg font-serif"
+              className="text-lg sm:text-2xl md:text-3xl text-white/90 italic mb-8 md:mb-12 tracking-wide drop-shadow-lg font-serif px-2"
             >
               Your Authentic Moroccan Adventure
             </motion.p>
 
-            {/* CTA Buttons */}
+            {/* CTA Buttons - Stack on mobile, Row on tablet/desktop */}
             <motion.div 
                initial={{ opacity: 0, y: 20 }}
                animate={{ opacity: 1, y: 0 }}
                transition={{ delay: 0.8, duration: 0.8 }}
-               className="flex flex-col md:flex-row gap-4 justify-center items-center"
+               className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4 sm:px-0"
             >
               <button 
                 onClick={scrollToNextSection}
-                className="w-full md:w-auto font-bold bg-white/90 hover:bg-white text-[#1e293b] px-8 py-4 rounded-full text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className="w-full sm:w-auto font-bold bg-white/90 hover:bg-white text-[#1e293b] px-6 py-3 md:px-8 md:py-4 rounded-full text-base md:text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
               >
                 Discover Morocco
               </button>
               <Link 
                 href="/plans" 
-                className="w-full md:w-auto font-bold bg-[#C1272D] hover:bg-[#a01f24] text-white px-8 py-4 rounded-full text-lg shadow-xl hover:shadow-red-900/30 hover:scale-105 transition-all duration-300"
+                className="w-full sm:w-auto font-bold bg-[#C1272D] hover:bg-[#a01f24] text-white px-6 py-3 md:px-8 md:py-4 rounded-full text-base md:text-lg shadow-xl hover:shadow-red-900/30 hover:scale-105 transition-all duration-300 block text-center"
               >
                 Get Your Custom Plan
               </Link>
@@ -95,23 +95,24 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Bottom decorative elements */}
+      {/* Bottom decorative elements - Adjusted positioning for mobile */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center w-full"
+        className="absolute bottom-6 md:bottom-10 left-1/2 transform -translate-x-1/2 text-center w-full px-4"
       >
-        <p className="text-white/80 text-sm md:text-lg tracking-widest italic mb-3 font-serif">
+        <p className="text-white/80 text-xs sm:text-sm md:text-lg tracking-widest italic mb-2 md:mb-3 font-serif">
           Voyagez avec passion, découvrez avec cœur
         </p>
-        <div className="flex justify-center items-center gap-4 text-white/60 text-xs uppercase tracking-[0.2em] font-sans font-bold">
+        {/* Hide dots on very small screens if needed, or wrap flex */}
+        <div className="flex flex-wrap justify-center items-center gap-2 md:gap-4 text-white/60 text-[10px] md:text-xs uppercase tracking-[0.15em] md:tracking-[0.2em] font-sans font-bold">
           <span>Marrakech</span>
-          <span className="text-[#C1272D]">•</span>
+          <span className="text-[#C1272D] hidden sm:inline">•</span>
           <span>Sahara</span>
-          <span className="text-[#006233]">•</span>
+          <span className="text-[#006233] hidden sm:inline">•</span>
           <span>Fès</span>
-          <span className="text-[#C1272D]">•</span>
+          <span className="text-[#C1272D] hidden sm:inline">•</span>
           <span>Chefchaouen</span>
         </div>
       </motion.div>
