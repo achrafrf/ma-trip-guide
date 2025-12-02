@@ -1,191 +1,331 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { MapPin, ArrowUpRight, Clock, Waves, TrendingUp, BusFront, Car, Anchor } from 'lucide-react';
+import { MapPin, Navigation, Car, CloudSun, Loader2, Waves, TrendingUp } from 'lucide-react';
+import TrailModal from '../ui/trail-modal';
 
-const seaData = [
-  {
-    id: 1,
-    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    title: 'شاطئ الصويرة',
-    location: 'الصويرة (2.5 ساعة من مراكش)',
-    difficulty: 'سهل',
-    difficultyClass: 'bg-green-100 text-green-800',
-    difficultyColor: 'bg-green-500',
-    reservation: 'دخول مجاني',
-    reservationColor: 'bg-green-100 text-green-800',
-    stats: {
-      distance: '4.5 كم',
-      duration: '1-2 ساعات',
-      time: '1-2 ساعات',
-      altitude: '0m',
-      elevation: '0m',
-      gain: '0m↑',
+const MoroccanSea = () => {
+  // 1. DATA (High Quality - GetYourGuide Style)
+  const seaData = [
+    {
+      id: 1,
+      // Legzira
+      image: 'https://cdn.getyourguide.com/image/format=auto,fit=crop,gravity=center,quality=60,width=535,height=400,dpr=2/tour_img/6260da8bca94c.jpeg', 
+      gallery: [
+        'https://cdn.getyourguide.com/image/format=auto,fit=crop,gravity=center,quality=60,width=535,height=400,dpr=2/tour_img/6260da8bca94c.jpeg', // Main
+        'https://cdn.getyourguide.com/image/format=auto,fit=crop,gravity=center,quality=60,width=265,height=195,dpr=2/tour_img/6260da8acdf26.jpeg',   // Top Right
+        'https://cdn.getyourguide.com/image/format=auto,fit=contain,gravity=center,quality=60,width=1440,height=650,dpr=2/tour_img/6260da8ba905b.jpeg',   // Bottom Right
+        'https://cdn.getyourguide.com/image/format=auto,fit=contain,gravity=center,quality=60,width=1440,height=650,dpr=2/tour_img/6260da8c6ff01.jpeg'     // Extra
+      ],
+      title: 'شاطئ الكزيرة',
+      location: 'سيدي إفني',
+      coordinates: { lat: 29.4455, lng: -10.1136 },
+      difficulty: 'طبيعة',
+      difficultyClass: 'bg-orange-100 text-orange-800',
+      description: 'من بين أجمل 40 شاطئ فالعالم. الأقواس الحمراء والغروب تما شي حاجة خيالية.',
+      transport: { bus: 'متوفر', taxi: 'متوفر' },
+      stats: { gain: 'أقواس صخرية' },
+      hotels: [
+        { name: 'Logis La Marine', image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400', rating: '4.5' },
+        { name: 'Kasbah Legzira', image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400', rating: '4.2' }
+      ],
+      restaurants: [
+        { name: 'Legzira Beach Resto', type: 'سمك طازج' },
+        { name: 'Café Des Amis', type: 'طاجين' }
+      ]
     },
-    description: 'شاطئ ممتد بطول 4.5 كم مع رياح مثالية لممارسة رياضات الماء. المدينة العتيقة المصنفة تراث عالمي من قبل اليونسكو تجعل الزيارة تجربة ثقافية وسياحية فريدة.',
-    transport: {
-      bus: 'حافلة CTM من مراكش إلى الصويرة (2.5 ساعة)',
-      taxi: 'سيارة خاصة (2 ساعة)',
+    {
+      id: 2,
+      // Quemado (Al Hoceima)
+      image: 'https://cloudfront-eu-central-1.images.arcpublishing.com/le360/W5WSNMMEEZDJXOL6LR5QDK6DGE.jfif',
+      gallery: [
+        'https://cloudfront-eu-central-1.images.arcpublishing.com/le360/W5WSNMMEEZDJXOL6LR5QDK6DGE.jfif',
+        'https://cloudfront-eu-central-1.images.arcpublishing.com/le360/RPCMB3STUVG2NN6ZQOUSVP5ECQ.jpg',
+        'https://cloudfront-eu-central-1.images.arcpublishing.com/le360/SUFU3HCBNRH6BAHQQQIB6UWOPY.jpg',
+        'https://cloudfront-eu-central-1.images.arcpublishing.com/le360/SUFU3HCBNRH6BAHQQQIB6UWOPY.jpg'
+      ],
+      title: 'شاطئ كيمادو',
+      location: 'الحسيمة',
+      coordinates: { lat: 35.2447, lng: -3.9314 },
+      difficulty: 'سباحة',
+      difficultyClass: 'bg-blue-100 text-blue-800',
+      description: 'جوهرة المتوسط. مياه كريستالية هادئة تحت الجبل، مثالية للعائلات والسباحة.',
+      transport: { bus: 'قريب', taxi: 'متوفر' },
+      stats: { gain: 'مياه هادئة' },
+      hotels: [
+        { name: 'Mercure Quemado', image: 'https://images.unsplash.com/photo-1571896349842-6e5c48dc52e3?w=400', rating: '4.8' },
+        { name: 'Radisson Blu', image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400', rating: '4.7' }
+      ],
+      restaurants: [
+        { name: 'Espace Miramar', type: 'أكل عالمي' },
+        { name: 'Club Nautique', type: 'فواكه البحر' }
+      ]
     },
-    busRoute: 'حافلة CTM من مراكش إلى الصويرة (2.5 ساعة)',
-    taxiInfo: 'سيارة خاصة (2 ساعة)',
-    accessType: 'transport',
-  },
-  {
-    id: 2,
-    image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    title: 'شاطئ أغادير',
-    location: 'أغادير (30 دقيقة من المطار)',
-    difficulty: 'سهل',
-    difficultyClass: 'bg-green-100 text-green-800',
-    difficultyColor: 'bg-green-500',
-    reservation: 'دخول مجاني',
-    reservationColor: 'bg-green-100 text-green-800',
-    stats: {
-      distance: '6 كم',
-      duration: '2-3 ساعات',
-      time: '2-3 ساعات',
-      altitude: '0m',
-      elevation: '0m',
-      gain: '0m↑',
+    {
+      id: 3,
+      // Imsouane
+      image: 'https://images.pexels.com/photos/30450352/pexels-photo-30450352.jpeg',
+      gallery: [
+        'https://images.pexels.com/photos/30450352/pexels-photo-30450352.jpeg',
+        'https://images.pexels.com/photos/13369662/pexels-photo-13369662.jpeg',
+        'https://images.pexels.com/photos/17539758/pexels-photo-17539758.jpeg',
+        'https://images.pexels.com/photos/17539760/pexels-photo-17539760.jpeg'
+      ],
+      title: 'إمسوان',
+      location: 'أكادير',
+      coordinates: { lat: 30.8413, lng: -9.8267 },
+      difficulty: 'Surfing',
+      difficultyClass: 'bg-teal-100 text-teal-800',
+      description: 'جنة السورف. خليج ساحر كيجمع بين الجبل والبحر وأحسن غروب ممكن تشوفو.',
+      transport: { bus: 'Shuttle', taxi: 'Grand Taxi' },
+      stats: { gain: 'أطول موجة' },
+      hotels: [
+        { name: 'Olo Surf Nature', image: 'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=400', rating: '4.6' },
+        { name: 'Auberge Tasra', image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400', rating: '4.3' }
+      ],
+      restaurants: [
+        { name: 'Chez Pierre', type: 'سمك مشوي' },
+        { name: 'Auberge Restaurant', type: 'بلدي' }
+      ]
     },
-    description: 'أشهر شواطئ المغرب بطول 6 كم، مزود بكل المرافق والخدمات. مثالي للعائلات مع ممارسة الرياضات المائية والاستمتاع بشمس المغرب الدافئة طوال العام.',
-    transport: {
-      bus: 'حافلة من محطة أغادير إلى الشاطئ (15 دقيقة)',
-      taxi: 'سيارة أجرة (10 دقائق)',
+    {
+      id: 4,
+      // Dakhla
+      image: 'https://desert-maroc.com/wordpress2012/wp-content/uploads/dakhla-plage-porto-rico.jpg',
+      gallery: [
+        'https://desert-maroc.com/wordpress2012/wp-content/uploads/dakhla-plage-porto-rico.jpg',
+        'https://desert-maroc.com/wordpress2012/wp-content/uploads/dakhla-plage-el-moussafir.jpg',
+        'https://desert-maroc.com/wordpress2012/wp-content/uploads/dakhla-ile-du-dragon.jpg',
+        'https://desert-maroc.com/wordpress2012/wp-content/uploads/dakhla-pk25.jpg'
+      ],
+      title: 'الداخلة',
+      location: 'الداخلة',
+      coordinates: { lat: 23.9042, lng: -15.7483 },
+      difficulty: 'Kitesurf',
+      difficultyClass: 'bg-purple-100 text-purple-800',
+      description: 'الصحراء تتلقي بالمحيط. الوجهة العالمية للكايت سورف والراحة النفسية.',
+      transport: { bus: 'No', taxi: 'Transfer' },
+      stats: { gain: 'Kitesurfing' },
+      hotels: [
+        { name: 'Dakhla Attitude', image: 'https://images.unsplash.com/photo-1615880480595-f5f9b4fb530e?w=400', rating: '4.9' },
+        { name: 'PK25 Hotel', image: 'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=400', rating: '4.7' }
+      ],
+      restaurants: [
+        { name: 'Talhamar', type: 'محار (Oysters)' },
+        { name: 'Ntila', type: 'مغربي' }
+      ]
     },
-    busRoute: 'حافلة من محطة أغادير إلى الشاطئ (15 دقيقة)',
-    taxiInfo: 'سيارة أجرة (10 دقائق)',
-    accessType: 'transport',
-  },
-  {
-    id: 3,
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    title: 'شاطئ الداخلة',
-    location: 'الداخلة (2 ساعة بالطائرة من الدار البيضاء)',
-    difficulty: 'سهل',
-    difficultyClass: 'bg-green-100 text-green-800',
-    difficultyColor: 'bg-green-500',
-    reservation: 'دخول مجاني',
-    reservationColor: 'bg-green-100 text-green-800',
-    stats: {
-      distance: '40 كم',
-      duration: 'يوم كامل',
-      time: 'يوم كامل',
-      altitude: '0m',
-      elevation: '0m',
-      gain: '0m↑',
+    {
+      id: 5,
+      // Oualidia
+      image: 'https://cdn.getyourguide.com/image/format=auto,fit=crop,gravity=center,quality=60,width=535,height=400,dpr=2/tour_img/1f35df9d082d1534d57d226f6f451f25f573345f0f8107f1de01d617a8dd9bf1.png',
+      gallery: [
+        'https://cdn.getyourguide.com/image/format=auto,fit=crop,gravity=center,quality=60,width=535,height=400,dpr=2/tour_img/1f35df9d082d1534d57d226f6f451f25f573345f0f8107f1de01d617a8dd9bf1.png',
+        'https://cdn.getyourguide.com/image/format=auto,fit=contain,gravity=center,quality=60,width=1440,height=650,dpr=2/tour_img/cd59ac3fd9162a57e6a8b87b61e74fed3deb8a3859f59929db840fa1bf48cf9c.png',
+        'https://cdn.getyourguide.com/image/format=auto,fit=contain,gravity=center,quality=60,width=1440,height=650,dpr=2/tour_img/58fbfcbec94981871eaf1b94e4a7c24f718b8fea245a3df37bf51c1878e618f0.png',
+        'https://cdn.getyourguide.com/image/format=auto,fit=contain,gravity=center,quality=60,width=1440,height=650,dpr=2/tour_img/ff84fde34637e4abfacbdc00012ed62bb2ce806424b14fe2ade2be7541e0fd28.png'
+      ],
+      title: 'الواليدية',
+      location: 'الواليدية',
+      coordinates: { lat: 32.7303, lng: -9.0427 },
+      difficulty: 'Relax',
+      difficultyClass: 'bg-green-100 text-green-800',
+      description: 'البحيرة الساحرة. معروفة بالمحار، والهدوء، وجولات القوارب التقليدية.',
+      transport: { bus: 'Bus', taxi: 'Taxi' },
+      stats: { gain: 'Lagoon' },
+      hotels: [
+        { name: 'La Sultana', image: 'https://images.unsplash.com/photo-1560662105-57f8ad6ae2d8?w=400', rating: '5.0' },
+        { name: 'Chateau Eden', image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=400', rating: '4.4' }
+      ],
+      restaurants: [
+        { name: 'L’Araignée Gourmande', type: 'فواكه البحر' },
+        { name: 'Ostrea', type: 'محار' }
+      ]
     },
-    description: 'واحد من أفضل الوجهات العالمية لرياضة ركوب الأمواج والرياضات المائية. مياه نقية ورياح مثالية تجعله جنة لمحبي المغامرات المائية في المحيط الأطلسي.',
-    transport: {
-      bus: 'طائرة من الدار البيضاء إلى الداخلة + نقل محلي',
-      taxi: 'سيارة أجرة من المطار (20 دقيقة)',
-    },
-    busRoute: 'طائرة من الدار البيضاء إلى الداخلة + نقل محلي',
-    taxiInfo: 'سيارة أجرة من المطار (20 دقيقة)',
-    accessType: 'transport',
-  }
-];
-
-const MoroccanSea = ({ onTrailSelect }) => {
-  const handleSeaClick = (sea) => {
-    if (onTrailSelect) {
-      onTrailSelect(sea);
+    {
+      id: 6,
+      // Taghazout
+      image: 'https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwlIi1Ww9ZwgV2ZrOrEK9VpI5CkPSXmHY8sX7d1BRiBfXLoBHUCBjLAWaDWuoGRvjhyjxNPKvnC9U0mrHWNJMyRRkI07_P5e-kTCcONH64lT2uo5ixNmvU25WJLK6U8QFWtCeih=w455-h306-n-k-no',
+      gallery: [
+        'https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwlIi1Ww9ZwgV2ZrOrEK9VpI5CkPSXmHY8sX7d1BRiBfXLoBHUCBjLAWaDWuoGRvjhyjxNPKvnC9U0mrHWNJMyRRkI07_P5e-kTCcONH64lT2uo5ixNmvU25WJLK6U8QFWtCeih=w455-h306-n-k-no',
+        'https://lh3.googleusercontent.com/gps-cs-s/AG0ilSyzbuuTqa7CGaefjdhmMfl288erzNJ1Xztm9uC9EId-HPClqCfpy00LdAUI-RKHS7543omEtHt0vlz2aV2mAs5OgbuTFYAMyUUeN2zkqqzEOYc19YKq2gk7zFgW7x1rvcUrHfCX=s1360-w1360-h1020-rw',
+        'https://lh3.googleusercontent.com/gps-cs-s/AG0ilSyi7fM-Gv9JqBI7TBP5IcMCDFR7SEyVoaCcqyxDln3smHgnpqNphQoomXVJpRdSP9N9JHNYO8Lk_c3OVUpnFIOZwsd4WgNBA037YwiYyUZPhlY5z8DGh-4tz8jK2q5pmEf-1fymCw=s1360-w1360-h1020-rw',
+        'https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxTuYppSsicpYLEVsLmAcSQaTSCo-RdGuDzzNrFNsrV8g90XkxLvUoU0uEWF0qWhPgSdxh3a3e8cxeBNM6hQ0PrtAQgH0Z_OUH3cLNMjHQGq-WdUrOOvTNv54iwu9-soizfmuVVAA=s1360-w1360-h1020-rw'
+      ],
+      title: 'تغازوت',
+      location: 'أكادير',
+      coordinates: { lat: 30.5447, lng: -9.7093 },
+      difficulty: 'Youth',
+      difficultyClass: 'bg-yellow-100 text-yellow-800',
+      description: 'فايبز عالمية. يوغا، سورف، مقاهي زوينة، وأجواء شبابية بامتياز.',
+      transport: { bus: 'Bus 32', taxi: 'Taxi' },
+      stats: { gain: 'Yoga/Surf' },
+      hotels: [
+        { name: 'Fairmont Taghazout', image: 'https://images.unsplash.com/photo-1551918120-9739cb7471c7?w=400', rating: '4.9' },
+        { name: 'Amouage', image: 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=400', rating: '4.6' }
+      ],
+      restaurants: [
+        { name: 'World of Waves', type: 'Healthy' },
+        { name: 'L’Auberge', type: 'مغربي' }
+      ]
     }
+  ];
+
+  // 2. STATES & HOOKS
+  const [selectedTrail, setSelectedTrail] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
+  const [distances, setDistances] = useState({}); 
+  const [weathers, setWeathers] = useState({});
+
+  useEffect(() => {
+    // A. Get User Location
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const userLoc = { lat: position.coords.latitude, lng: position.coords.longitude };
+        setUserLocation(userLoc);
+        const newDistances = {};
+        seaData.forEach(item => {
+          newDistances[item.id] = calculateDistance(userLoc, item.coordinates);
+        });
+        setDistances(newDistances);
+      });
+    }
+
+    // B. Fetch Weather
+    seaData.forEach(item => {
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${item.coordinates.lat}&longitude=${item.coordinates.lng}&current_weather=true`)
+        .then(res => res.json())
+        .then(data => {
+          setWeathers(prev => ({ ...prev, [item.id]: data.current_weather?.temperature }));
+        })
+        .catch(err => console.log(err));
+    });
+  }, []);
+
+  // Helper Function: Haversine Formula
+  const calculateDistance = (start, end) => {
+    const R = 6371; 
+    const dLat = (end.lat - start.lat) * Math.PI / 180;
+    const dLon = (end.lng - start.lng) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(start.lat * Math.PI / 180) * Math.cos(end.lat * Math.PI / 180) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const distKm = Math.round(R * c); 
+    
+    const driveDist = Math.round(distKm * 1.3);
+    const hours = Math.floor(driveDist / 70);
+    const mins = Math.round(((driveDist / 70) - hours) * 60);
+
+    return {
+      km: driveDist,
+      time: hours > 0 ? `${hours}س ${mins}د` : `${mins} دقيقة`
+    };
   };
 
   return (
-    <div className="mb-8">
-      <h3 className="text-2xl font-semibold text-blue-800 mb-4 border-l-4 border-blue-600 pl-3 flex items-center gap-2">
-        <Waves className="w-6 h-6" />
-        الشواطئ والمناطق الساحلية
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {seaData.map((sea) => (
+    <div className="container mx-auto px-4 py-12" dir="rtl">
+      
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 border-b pb-4 gap-4">
+        <h3 className="text-3xl font-extrabold text-blue-950 flex items-center gap-3">
+          <span className="bg-blue-600 text-white p-2 rounded-lg"><Waves className="w-6 h-6" /></span>
+          وجهاتك الساحلية
+        </h3>
+        {!userLocation ? (
+          <div className="flex items-center gap-2 text-sm text-gray-500 animate-pulse bg-gray-50 px-4 py-2 rounded-full border">
+            <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
+            كنقلبو على موقعك باش نحسبو الطريق...
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 text-sm text-green-600 font-bold bg-green-50 px-4 py-2 rounded-full border border-green-100">
+            <Navigation className="w-4 h-4" />
+            تم تحديد موقعك بنجاح
+          </div>
+        )}
+      </div>
+      
+      {/* Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {seaData.map((item) => (
           <div 
-            key={sea.id}
-            className="rounded-lg border bg-white text-card-foreground shadow-sm group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full"
-            onClick={() => handleSeaClick(sea)}
+            key={item.id}
+            className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full transform hover:-translate-y-1"
+            onClick={() => setSelectedTrail(item)}
           >
-            <div className="relative overflow-hidden rounded-t-lg h-48">
+            {/* Image Section - Main Image */}
+            <div className="relative h-72 w-full overflow-hidden">
               <Image
-                src={sea.image}
-                alt={sea.title}
+                src={item.image}
+                alt={item.title}
                 fill
-                className="object-cover object-center transform group-hover:scale-105 transition-transform duration-300"
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute top-4 right-4 flex gap-2">
-                <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors bg-white text-gray-800 backdrop-blur-sm bg-opacity-90">
-                  {sea.reservation}
-                </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-90" />
+              
+              <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-md border border-white/30 px-3 py-1.5 rounded-2xl flex items-center gap-1.5 shadow-sm z-10">
+                <CloudSun className="w-4 h-4 text-white" />
+                <span className="font-bold text-sm text-white">
+                  {weathers[item.id] ? `${weathers[item.id]}°` : '--'}
+                </span>
               </div>
-              <div className="absolute bottom-4 right-4 flex gap-2 bg-white/80 rounded-full px-3 py-1">
-                <div className="text-blue-600">
-                  <BusFront className="w-4 h-4" />
-                </div>
-                <div className="text-blue-600">
-                  <Car className="w-4 h-4" />
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col space-y-1.5 p-6">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h4 className="tracking-tight text-xl font-semibold text-gray-900">{sea.title}</h4>
-                  <p className="text-sm text-gray-600 flex items-center gap-2 mt-1">
-                    <MapPin className="w-4 h-4 flex-shrink-0" />
-                    {sea.location}
-                  </p>
-                </div>
-                <div className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${sea.difficultyClass}`}>
-                  {sea.difficulty}
+
+              <div className="absolute bottom-4 right-4 text-white z-10">
+                <h4 className="text-3xl font-bold mb-1 drop-shadow-lg tracking-tight">{item.title}</h4>
+                <div className="flex items-center gap-1 text-sm font-medium opacity-90">
+                  <MapPin className="w-4 h-4 text-blue-300" />
+                  {item.location}
                 </div>
               </div>
             </div>
-            <div className="p-6 pt-0 flex-grow flex flex-col">
-              <div className="mb-4">
-                <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-                  <div className="flex items-center gap-2">
-                    <ArrowUpRight className="w-4 h-4 flex-shrink-0 text-blue-600" />
-                    <span className="text-base font-semibold text-gray-900">{sea.stats.distance}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 flex-shrink-0 text-blue-600" />
-                    <span className="text-base font-semibold text-gray-900">{sea.stats.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Waves className="w-4 h-4 flex-shrink-0 text-blue-600" />
-                    <span className="text-base font-semibold text-gray-900">ساحلي</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4 flex-shrink-0 text-blue-600" />
-                    <span className="text-base font-semibold text-gray-900">{sea.stats.gain}</span>
-                  </div>
+
+            {/* Info Section */}
+            <div className="p-6 flex flex-col flex-grow">
+              
+              <div className="flex items-center justify-between mb-4 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                 <div className="flex flex-col">
+                    <span className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">المسافة</span>
+                    <span className="text-gray-900 font-extrabold text-lg">
+                      {distances[item.id] ? `${distances[item.id].km} km` : '...'}
+                    </span>
+                 </div>
+                 <div className="h-8 w-px bg-gray-200"></div>
+                 <div className="flex flex-col items-end">
+                    <span className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">الزمن</span>
+                    <span className="text-gray-900 font-extrabold text-lg">
+                      {distances[item.id] ? distances[item.id].time : '...'}
+                    </span>
+                 </div>
+              </div>
+
+              <div className="flex gap-2 mb-6 flex-wrap">
+                <span className={`px-3 py-1.5 rounded-xl text-xs font-bold ${item.difficultyClass}`}>
+                  {item.difficulty}
+                </span>
+                <div className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-100 text-gray-600 border border-gray-200">
+                   <TrendingUp className="w-3 h-3" />
+                   {item.stats.gain}
                 </div>
               </div>
-              <p className="text-sm text-gray-600 line-clamp-3 mb-4 leading-relaxed">{sea.description}</p>
-              <div className="mt-auto">
-                <h5 className="text-sm font-semibold mb-2 text-gray-900">كيفية الوصول</h5>
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-start gap-2">
-                    <div className="mt-0.5">
-                      <BusFront className="w-4 h-4 flex-shrink-0 text-blue-600" />
-                    </div>
-                    <p className="text-gray-600">{sea.transport.bus}</p>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <div className="mt-0.5">
-                      <Car className="w-4 h-4 flex-shrink-0 text-blue-600" />
-                    </div>
-                    <p className="text-gray-600">{sea.transport.taxi}</p>
-                  </div>
-                </div>
-              </div>
+
+              <button className="w-full mt-auto font-bold bg-[#C1272D] hover:bg-[#a01f24] text-white py-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95">
+                <Navigation className="w-4 h-4" />
+                عرض الصور والتفاصيل
+              </button>
             </div>
           </div>
         ))}
       </div>
+
+      <TrailModal 
+        trail={selectedTrail} 
+        isOpen={!!selectedTrail} 
+        onClose={() => setSelectedTrail(null)}
+        userLocation={userLocation}
+        calculatedDistance={selectedTrail ? distances[selectedTrail.id] : null}
+      />
     </div>
   );
 };

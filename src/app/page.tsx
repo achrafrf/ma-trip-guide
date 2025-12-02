@@ -10,6 +10,8 @@ import MoroccanSea from '@/components/sections/Sea';
 import MoroccanForests from '@/components/sections/forest'
 import MoroccanDeserts from '@/components/sections/desert';
 import MoroccanStadiums from '@/components/sections/stadium';
+import MoroccanMountains from "@/components/sections/MoroccanMountains";
+import TechPartners from '@/components/sections/TechPartners';
 import Footer from '@/components/sections/footer';
 import TrailModal from "@/components/ui/trail-modal";
 
@@ -72,6 +74,11 @@ const FilteredSections = ({ onTrailSelect }: FilteredSectionsProps) => {
     <>
       {showAllSections ? (
         <>
+        {/* قسم البحر */}
+          <motion.section {...fadeInUp} className="mb-12">
+            <MoroccanMountains onTrailSelect={onTrailSelect}/>
+          </motion.section>
+
           {/* قسم البحر */}
           <motion.section {...fadeInUp} className="mb-12">
             <MoroccanSea onTrailSelect={onTrailSelect}/>
@@ -102,6 +109,14 @@ const FilteredSections = ({ onTrailSelect }: FilteredSectionsProps) => {
         </>
       ) : (
         <>
+         {/* عندما يتم اختيار فئة "البحر" */}
+          {activeCategory === 'mountains' && (
+            <motion.section {...fadeInUp} className="mb-12">
+              <MoroccanMountains onTrailSelect={onTrailSelect}/>
+            </motion.section>
+          )}
+
+
           {/* عندما يتم اختيار فئة "البحر" */}
           {activeCategory === 'sea' && (
             <motion.section {...fadeInUp} className="mb-12">
@@ -195,8 +210,11 @@ export default function HomePage() {
               {/* عرض الأقسام المصفاة مع تمرير دالة المودال */}
               <FilteredSections onTrailSelect={handleTrailSelect} />
             </main>
+          <motion.div {...fadeInUp}>
+            <TechPartners />
+          </motion.div>
 
-            <motion.div {...fadeInUp}>
+           <motion.div {...fadeInUp}>
               <Footer />
             </motion.div>
           </div>

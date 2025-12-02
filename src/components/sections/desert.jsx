@@ -1,193 +1,259 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { MapPin, ArrowUpRight, Clock, Mountain, TrendingUp, BusFront, Car, Sun } from 'lucide-react';
+import { MapPin, Navigation, Sun, CloudSun, Loader2, Mountain, TrendingUp, Tent } from 'lucide-react';
+import TrailModal from '../ui/trail-modal';
 
-const desertsData = [
-  {
-    id: 1,
-    image: 'https://images.unsplash.com/photo-1544984243-ec57ea16fe25?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    title: 'صحراء مرزوكة',
-    location: 'إقليم الراشيدية، جهة درعة تافيلالت (6 ساعات من مراكش)',
-    difficulty: 'سهل إلى متوسط',
-    difficultyClass: 'bg-orange-100 text-orange-800',
-    difficultyColor: 'bg-orange-500',
-    reservation: 'يحتاج حجز',
-    reservationColor: 'bg-orange-100 text-orange-800',
-    stats: {
-      distance: 'جولة متعددة الأيام',
-      duration: '2-3 أيام',
-      time: '2-3 أيام',
-      altitude: '800m',
-      elevation: '800m',
-      gain: '150m↑',
+const MoroccanDeserts = () => {
+  // 1. DATA (High Quality - Desert Edition)
+  const desertsData = [
+    {
+      id: 1,
+      // Merzouga
+      image: 'https://images.unsplash.com/photo-1544984243-ec57ea16fe25?q=80&w=1200',
+      gallery: [
+        'https://images.unsplash.com/photo-1544984243-ec57ea16fe25?q=80&w=1200',
+        'https://images.unsplash.com/photo-1539659392211-155054320922?q=80&w=800',
+        'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?q=80&w=800',
+        'https://images.unsplash.com/photo-1590762697843-255d4c827011?q=80&w=800'
+      ],
+      title: 'صحراء مرزوكة',
+      location: 'الراشيدية',
+      coordinates: { lat: 31.1309, lng: -4.0137 }, 
+      difficulty: 'سهل',
+      difficultyClass: 'bg-orange-100 text-orange-800',
+      description: 'الكثبان الذهبية المشهورة عالمياً (عرق الشبي). تجربة التخييم الفاخر تحت النجوم وركوب الجمال وقت الغروب هي تجربة لا تنسى.',
+      transport: { bus: 'CTM إلى الراشيدية', taxi: 'متوفر من أرفود' },
+      stats: { gain: 'عرق الشبي' },
+      hotels: [
+        { name: 'Luxury Desert Camp', image: 'https://images.unsplash.com/photo-1520023424458-963a4362d294?w=400', rating: '4.9' },
+        { name: 'Riad Madu', image: 'https://images.unsplash.com/photo-1598413554030-22c608f61559?w=400', rating: '4.7' }
+      ],
+      restaurants: [
+        { name: 'Café Nora', type: 'مدفونة (Pizza Berber)' },
+        { name: 'Restaurant Dakar', type: 'طاجين صحراوي' }
+      ]
     },
-    description: 'أشهر الكثبان الرملية في المغرب بارتفاع يصل إلى 150 متر. تجربة فريدة للتخييم تحت النجوم، ركوب الجمال، والاستمتاع بجمال الصحراء المطلقة. من أفضل الأماكن لمشاهدة شروق وغروب الشمس مع إطلالات بانورامية مذهلة.',
-    transport: {
-      bus: 'حافلة CTM من مراكش إلى الراشيدية + سيارة 4x4 محلية (6-7 ساعات)',
-      taxi: 'سيارة خاصة مع سائق (5-6 ساعات)',
+    {
+      id: 2,
+      // Chegaga / Zagora
+      image: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?q=80&w=1200',
+      gallery: [
+        'https://images.unsplash.com/photo-1509316785289-025f5b846b35?q=80&w=1200',
+        'https://images.unsplash.com/photo-1605537964076-3cb0ea2e3522?q=80&w=800',
+        'https://images.unsplash.com/photo-1542052600-09852264585c?q=80&w=800',
+        'https://images.unsplash.com/photo-1518182170546-0766bd6f5a04?q=80&w=800'
+      ],
+      title: 'عرق شقاقة',
+      location: 'محاميد الغزلان',
+      coordinates: { lat: 29.8281, lng: -6.1557 }, // إحداثيات محاميد الغزلان
+      difficulty: 'مغامرة',
+      difficultyClass: 'bg-amber-100 text-amber-800',
+      description: 'الصحراء البرية الحقيقية. كثبان رملية تمتد لـ 40 كم، بعيدة عن العمران، كتوصل ليها بـ 4x4. الهدوء المطلق.',
+      transport: { bus: 'إلى زاكورة', taxi: '4x4 ضروري' },
+      stats: { gain: 'سفاري 4x4' },
+      hotels: [
+        { name: 'Chigaga Luxury Camp', image: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=400', rating: '4.8' },
+        { name: 'Bab Rimal', image: 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?w=400', rating: '4.5' }
+      ],
+      restaurants: [
+        { name: 'Chez Le Pacha', type: 'كسكس' },
+        { name: 'Oasis Resto', type: 'شاي صحراوي' }
+      ]
     },
-    busRoute: 'حافلة CTM من مراكش إلى الراشيدية + سيارة 4x4 محلية (6-7 ساعات)',
-    taxiInfo: 'سيارة خاصة مع سائق (5-6 ساعات)',
-    accessType: 'transport',
-    reservationLink: 'https://example.com/merzouga-tours',
-  },
-  {
-    id: 2,
-    image: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    title: 'صحراء الشيبة',
-    location: 'إقليم زاكورة، جهة درعة تافيلالت (5 ساعات من ورزازات)',
-    difficulty: 'متوسط',
-    difficultyClass: 'bg-yellow-100 text-yellow-800',
-    difficultyColor: 'bg-yellow-500',
-    reservation: 'يحتاج دليل',
-    reservationColor: 'bg-yellow-100 text-yellow-800',
-    stats: {
-      distance: 'جولة متعددة الأيام',
-      duration: '3 أيام',
-      time: '3 أيام',
-      altitude: '700m',
-      elevation: '700m',
-      gain: '120m↑',
-    },
-    description: 'كثبان رملية ذهبية خلابة مع واحات النخيل المحيطة. منطقة أقل ازدحاماً من مرزوكا وتوفر تجربة صحراوية أكثر هدوءاً. مثالية للمشي لمسافات طويلة والتخييم في البرية.',
-    transport: {
-      bus: 'حافلة من ورزازات إلى زاكورة + نقل محلي (5 ساعات)',
-      taxi: 'سيارة دفع رباعي من ورزازات (4 ساعات)',
-    },
-    busRoute: 'حافلة من ورزازات إلى زاكورة + نقل محلي (5 ساعات)',
-    taxiInfo: 'سيارة دفع رباعي من ورزازات (4 ساعات)',
-    accessType: 'transport',
-    reservationLink: 'https://example.com/chegaga-tours',
-  },
-  {
-    id: 3,
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    title: 'واحة فكيك',
-    location: 'جهة الشرق، فكيك (7 ساعات من وجدة)',
-    difficulty: 'سهل',
-    difficultyClass: 'bg-green-100 text-green-800',
-    difficultyColor: 'bg-green-500',
-    reservation: 'دليل مستحسن',
-    reservationColor: 'bg-green-100 text-green-800',
-    stats: {
-      distance: 'مسارات متعددة',
-      duration: '1-2 أيام',
-      time: '1-2 أيام',
-      altitude: '1000m',
-      elevation: '1000m',
-      gain: '50m↑',
-    },
-    description: 'واحة صحراوية خصبة تشتهر ببساتين النخيل والينابيع الطبيعية. توفر تجربة فريدة تجمع بين جمال الصحراء وخصوبة الواحات. مثالية للمشي عبر القصور القديمة والاستمتاع بالثقافة المحلية.',
-    transport: {
-      bus: 'حافلة من وجدة إلى فكيك (7 ساعات)',
-      taxi: 'سيارة خاصة (6 ساعات)',
-    },
-    busRoute: 'حافلة من وجدة إلى فكيك (7 ساعات)',
-    taxiInfo: 'سيارة خاصة (6 ساعات)',
-    accessType: 'transport',
-  }
-];
-
-const MoroccanDeserts = ({ onTrailSelect }) => {
-  const handleDesertClick = (desert) => {
-    if (onTrailSelect) {
-      onTrailSelect(desert);
+    {
+      id: 3,
+      // Agafay (بدلت فكيك بأكفاي حيت سياحية كثر وقريبة لمراكش وكتجي واعرة فالصور)
+      image: 'https://images.unsplash.com/photo-1545167622-3a6ac156f422?q=80&w=1200',
+      gallery: [
+        'https://images.unsplash.com/photo-1545167622-3a6ac156f422?q=80&w=1200',
+        'https://images.unsplash.com/photo-1539020140153-e479b8c22e70?q=80&w=800',
+        'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?q=80&w=800',
+        'https://images.unsplash.com/photo-1580041029603-1e58ab814714?q=80&w=800'
+      ],
+      title: 'صحراء أكفاي',
+      location: 'مراكش (40 دقيقة)',
+      coordinates: { lat: 31.4385, lng: -8.1887 }, // إحداثيات أكفاي
+      difficulty: 'استجمام',
+      difficultyClass: 'bg-stone-100 text-stone-800',
+      description: 'الصحراء الحجرية الساحرة. أقرب تجربة صحراوية لمراكش، مثالية للعشاء تحت النجوم مع خلفية جبال الأطلس.',
+      transport: { bus: 'لا يوجد', taxi: 'نقل سياحي' },
+      stats: { gain: 'جبال الأطلس' },
+      hotels: [
+        { name: 'Inara Camp', image: 'https://images.unsplash.com/photo-1495365200479-c4ed1d35e1aa?w=400', rating: '4.7' },
+        { name: 'White Camel', image: 'https://images.unsplash.com/photo-1523531294919-947c638d9753?w=400', rating: '4.6' }
+      ],
+      restaurants: [
+        { name: 'Bohëmia', type: 'Fine Dining' },
+        { name: 'Le Bédouin', type: 'مشويات' }
+      ]
     }
+  ];
+
+  // 2. LOGIC (نفس اللوجيك ديال البحر: GPS, Weather, Distance)
+  const [selectedDesert, setSelectedDesert] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
+  const [distances, setDistances] = useState({}); 
+  const [weathers, setWeathers] = useState({});
+
+  useEffect(() => {
+    // A. Get User Location
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const userLoc = { lat: position.coords.latitude, lng: position.coords.longitude };
+        setUserLocation(userLoc);
+        
+        const newDistances = {};
+        desertsData.forEach(item => {
+          newDistances[item.id] = calculateDistance(userLoc, item.coordinates);
+        });
+        setDistances(newDistances);
+      });
+    }
+
+    // B. Fetch Weather
+    desertsData.forEach(item => {
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${item.coordinates.lat}&longitude=${item.coordinates.lng}&current_weather=true`)
+        .then(res => res.json())
+        .then(data => {
+          setWeathers(prev => ({ ...prev, [item.id]: data.current_weather?.temperature }));
+        })
+        .catch(err => console.log(err));
+    });
+  }, []);
+
+  // Helper: Haversine Formula
+  const calculateDistance = (start, end) => {
+    const R = 6371; 
+    const dLat = (end.lat - start.lat) * Math.PI / 180;
+    const dLon = (end.lng - start.lng) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(start.lat * Math.PI / 180) * Math.cos(end.lat * Math.PI / 180) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const distKm = Math.round(R * c); 
+    
+    // الصحراء الطريق فيها طويلة شوية، نزيدو 40% كتقدير
+    const driveDist = Math.round(distKm * 1.4);
+    const hours = Math.floor(driveDist / 60); // السرعة المتوسطة فالطريق الوطنية
+    const mins = Math.round(((driveDist / 60) - hours) * 60);
+
+    return {
+      km: driveDist,
+      time: hours > 0 ? `${hours}س ${mins}د` : `${mins} دقيقة`
+    };
   };
 
   return (
-    <div className="mb-8">
-      <h3 className="text-2xl font-semibold text-amber-800 mb-4 border-l-4 border-amber-600 pl-3 flex items-center gap-2">
-        <Sun className="w-6 h-6" />
-        الرحلات الصحراوية في المغرب
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {desertsData.map((desert) => (
+    <div className="container mx-auto px-4 py-8 mb-12" dir="rtl">
+      
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 border-r-4 border-amber-500 pr-4">
+        <div>
+           <h3 className="text-3xl font-extrabold text-amber-950 flex items-center gap-3">
+             <span className="bg-amber-100 text-amber-600 p-2 rounded-xl"><Sun className="w-8 h-8" /></span>
+             سحر الصحراء المغربية
+           </h3>
+           <p className="text-gray-500 mt-2 text-sm max-w-xl">اكتشف الكثبان الرملية الذهبية والواحات المخفية. تجربة التخييم والمغامرة.</p>
+        </div>
+        
+        {!userLocation ? (
+          <div className="mt-4 md:mt-0 flex items-center gap-2 text-xs text-gray-500 bg-amber-50 px-3 py-1.5 rounded-full border border-amber-100">
+            <Loader2 className="w-3 h-3 animate-spin text-amber-600" />
+            كنحسبو الطريق للصحراء...
+          </div>
+        ) : (
+          <div className="mt-4 md:mt-0 flex items-center gap-2 text-xs text-amber-700 font-bold bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200">
+            <Navigation className="w-3 h-3" />
+            المسافة محسوبة من موقعك
+          </div>
+        )}
+      </div>
+      
+      {/* Cards Grid (3 Columns) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {desertsData.map((item) => (
           <div 
-            key={desert.id}
-            className="rounded-lg border bg-white text-card-foreground shadow-sm group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full"
-            onClick={() => handleDesertClick(desert)}
+            key={item.id}
+            className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full transform hover:-translate-y-1"
+            onClick={() => setSelectedDesert(item)}
           >
-            <div className="relative overflow-hidden rounded-t-lg h-48">
+            {/* Image Section */}
+            <div className="relative h-64 w-full overflow-hidden">
               <Image
-                src={desert.image}
-                alt={desert.title}
+                src={item.image}
+                alt={item.title}
                 fill
-                className="object-cover object-center transform group-hover:scale-105 transition-transform duration-300"
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute top-4 right-4 flex gap-2">
-                <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors bg-white text-gray-800 backdrop-blur-sm bg-opacity-90">
-                  {desert.reservation}
-                </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80" />
+              
+              {/* Weather Badge */}
+              <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md border border-white/30 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm z-10">
+                <Sun className="w-4 h-4 text-amber-300" />
+                <span className="font-bold text-sm text-white">
+                  {weathers[item.id] ? `${weathers[item.id]}°` : '--'}
+                </span>
               </div>
-              <div className="absolute bottom-4 right-4 flex gap-2 bg-white/80 rounded-full px-3 py-1">
-                <div className="text-amber-600">
-                  <BusFront className="w-4 h-4" />
-                </div>
-                <div className="text-amber-600">
-                  <Car className="w-4 h-4" />
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col space-y-1.5 p-6">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h4 className="tracking-tight text-xl font-semibold text-gray-900">{desert.title}</h4>
-                  <p className="text-sm text-gray-600 flex items-center gap-2 mt-1">
-                    <MapPin className="w-4 h-4 flex-shrink-0" />
-                    {desert.location}
-                  </p>
-                </div>
-                <div className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${desert.difficultyClass}`}>
-                  {desert.difficulty}
+
+              <div className="absolute bottom-4 right-4 text-white z-10">
+                <h4 className="text-2xl font-bold mb-1 shadow-black drop-shadow-md">{item.title}</h4>
+                <div className="flex items-center gap-1 text-sm font-medium opacity-90">
+                  <MapPin className="w-4 h-4 text-amber-400" />
+                  {item.location}
                 </div>
               </div>
             </div>
-            <div className="p-6 pt-0 flex-grow flex flex-col">
-              <div className="mb-4">
-                <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-                  <div className="flex items-center gap-2">
-                    <ArrowUpRight className="w-4 h-4 flex-shrink-0 text-amber-600" />
-                    <span className="text-base font-semibold text-gray-900">{desert.stats.distance}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 flex-shrink-0 text-amber-600" />
-                    <span className="text-base font-semibold text-gray-900">{desert.stats.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Mountain className="w-4 h-4 flex-shrink-0 text-amber-600" />
-                    <span className="text-base font-semibold text-gray-900">{desert.stats.altitude}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4 flex-shrink-0 text-amber-600" />
-                    <span className="text-base font-semibold text-gray-900">{desert.stats.gain}</span>
-                  </div>
+
+            {/* Info Section */}
+            <div className="p-6 flex flex-col flex-grow">
+              
+              {/* Distance & Time Box */}
+              <div className="flex items-center justify-between mb-4 bg-amber-50/50 p-3 rounded-2xl border border-amber-100">
+                 <div className="flex flex-col">
+                    <span className="text-[10px] text-amber-600 font-bold uppercase tracking-wider">المسافة</span>
+                    <span className="text-gray-800 font-bold text-lg">
+                      {distances[item.id] ? `${distances[item.id].km} km` : '...'}
+                    </span>
+                 </div>
+                 <div className="h-8 w-px bg-amber-200"></div>
+                 <div className="flex flex-col items-end">
+                    <span className="text-[10px] text-amber-600 font-bold uppercase tracking-wider">الطريق</span>
+                    <span className="text-gray-800 font-bold text-lg">
+                      {distances[item.id] ? distances[item.id].time : '...'}
+                    </span>
+                 </div>
+              </div>
+
+              <div className="flex gap-2 mb-6 flex-wrap">
+                <span className={`px-3 py-1 rounded-full text-xs font-bold ${item.difficultyClass}`}>
+                  {item.difficulty}
+                </span>
+                <div className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600">
+                   <Tent className="w-3 h-3" />
+                   {item.stats.gain}
                 </div>
               </div>
-              <p className="text-sm text-gray-600 line-clamp-3 mb-4 leading-relaxed">{desert.description}</p>
-              <div className="mt-auto">
-                <h5 className="text-sm font-semibold mb-2 text-gray-900">كيفية الوصول</h5>
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-start gap-2">
-                    <div className="mt-0.5">
-                      <BusFront className="w-4 h-4 flex-shrink-0 text-amber-600" />
-                    </div>
-                    <p className="text-gray-600">{desert.transport.bus}</p>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <div className="mt-0.5">
-                      <Car className="w-4 h-4 flex-shrink-0 text-amber-600" />
-                    </div>
-                    <p className="text-gray-600">{desert.transport.taxi}</p>
-                  </div>
-                </div>
-              </div>
+
+              <button className="w-full mt-auto  bg-[#C1272D] hover:bg-[#a01f24] text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-gray-200">
+                <Navigation className="w-4 h-4" />
+                تفاصيل الرحلة
+              </button>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Modal Integration */}
+      <TrailModal 
+        trail={selectedDesert} 
+        isOpen={!!selectedDesert} 
+        onClose={() => setSelectedDesert(null)}
+        userLocation={userLocation}
+        calculatedDistance={selectedDesert ? distances[selectedDesert.id] : null}
+      />
     </div>
   );
 };
