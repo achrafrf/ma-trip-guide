@@ -36,31 +36,15 @@ const Header = () => {
       
       {/* LEFT SIDE: Buttons (Pointer events auto bach ykhedmo hit header fih pointer-events-none) */}
       <div className="flex items-center gap-2 pointer-events-auto">
-       <Link href="/donate">
+       <Link href="/contact">
           <button
-            className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm font-bold text-black shadow-sm transition-transform hover:scale-105"
+            className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md bg-[#C1272D] hover:bg-[#a01f24] text-white font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input  hover:text-white/50 h-8 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm  shadow-sm transition-transform hover:scale-105"
           >
-            <HandHeart className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
-            <span>Donate</span>
+            <HandHeart className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+            <span>Contact Us</span>
           </button>
         </Link>
-        <a
-          href="https://www.linkedin.com/in/achraf-rafiq/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 font-bold transition-all hover:scale-105 bg-white/90 px-2 py-1 sm:px-3 sm:py-1.5 rounded-md shadow-sm border border-purple-600/20 hover:bg-white hover:shadow-md h-8 sm:h-auto"
-        >
-          {/* Text mkhabbi f mobile (hidden), kayban f tablet/pc (sm:inline) */}
-          <span
-            className="hidden sm:inline text-sm sm:text-lg"
-            style={{ fontFamily: 'var(--font-brand, sans-serif)' }}
-          >
-            Design by Achraf
-          </span>
-          <div className="flex items-center justify-center w-5 h-5 sm:w-7 sm:h-7">
-            <Linkedin fill="#0A66C2" stroke="none" className="h-full w-full" />
-          </div>
-        </a>
+      
       </div>
 
       {/* CENTER LOGO - Absolute Position */}

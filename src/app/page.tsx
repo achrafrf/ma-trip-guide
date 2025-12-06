@@ -1,57 +1,23 @@
 'use client';
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 
 import Header from '@/components/sections/header';
 import HeroSection from '@/components/sections/hero';
 import CategoryFilter from '@/components/sections/category-filter';
 import MoroccanSea from '@/components/sections/Sea';
-import MoroccanForests from '@/components/sections/forest'
+import MoroccanForests from '@/components/sections/forest';
 import MoroccanDeserts from '@/components/sections/desert';
 import MoroccanStadiums from '@/components/sections/stadium';
 import MoroccanMountains from "@/components/sections/MoroccanMountains";
 import TechPartners from '@/components/sections/TechPartners';
 import Footer from '@/components/sections/footer';
-import TrailModal from "@/components/ui/trail-modal";
+// حيدنا import TrailModal
 
 import { FilterProvider, useFilter } from '@/contexts/FilterContext';
 import { useLanguage } from '@/contexts/language-context';
 
-// تعريف نوع للمسار
-interface Trail {
-  id: number;
-  image: string;
-  title: string;
-  location: string;
-  difficulty: string;
-  difficultyClass: string;
-  difficultyColor: string;
-  reservation: string;
-  reservationColor: string;
-  stats: {
-    distance: string;
-    duration: string;
-    time: string;
-    altitude: string;
-    elevation: string;
-    gain: string;
-  };
-  description: string;
-  transport: {
-    bus: string;
-    taxi: string;
-  };
-  busRoute?: string;
-  taxiInfo?: string;
-  accessType?: string;
-  reservationLink?: string;
-}
-
-// تعريف نوع للـ props
-interface FilteredSectionsProps {
-  onTrailSelect: (trail: Trail) => void;
-}
+// حيدنا Interfaces ديال Trail و Props حيت مبقيناش محتاجينهم هنا
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -60,46 +26,48 @@ const fadeInUp = {
   transition: { duration: 0.6 }
 };
 
-// ✅ المكون الداخلي لمعالجة العرض المصفى مع تعريف الأنواع
-const FilteredSections = ({ onTrailSelect }: FilteredSectionsProps) => {
+// ✅ المكون الداخلي: مبقاش كياخد props
+const FilteredSections = () => {
   const { activeCategory } = useFilter();
-  const { t } = useLanguage();
+  const { t } = useLanguage(); // وخا ما مستعملاش هنا، خليتها ربما تحتاجها من بعد
 
   console.log('Active Category:', activeCategory);
 
-  // عرض جميع الأقسام عندما تكون الفئة 'all' أو فارغة أو غير محددة
   const showAllSections = !activeCategory || activeCategory === '' || activeCategory === 'all';
+
+  // ملاحظة: الـ components لتحت (MoroccanSea, etc) خاصهم يكونو دابا فيهم Link لصفحة التفاصيل
+  // ومبقاوش كيتسناو onTrailSelect prop
 
   return (
     <>
       {showAllSections ? (
         <>
-        {/* قسم البحر */}
+          {/* الجبال */}
           <motion.section {...fadeInUp} className="mb-12">
-            <MoroccanMountains onTrailSelect={onTrailSelect}/>
+            <MoroccanMountains />
           </motion.section>
 
-          {/* قسم البحر */}
+          {/* البحر */}
           <motion.section {...fadeInUp} className="mb-12">
-            <MoroccanSea onTrailSelect={onTrailSelect}/>
+            <MoroccanSea />
           </motion.section>
 
-          {/* الغابات المغربية */}
+          {/* الغابات */}
           <motion.section {...fadeInUp} className="mb-12">
-            <MoroccanForests onTrailSelect={onTrailSelect} />
+            <MoroccanForests />
           </motion.section>
 
-          {/* الصحراء المغربية */}
+          {/* الصحراء */}
           <motion.section {...fadeInUp} className="mb-12">
-            <MoroccanDeserts onTrailSelect={onTrailSelect} />
+            <MoroccanDeserts />
           </motion.section>
 
-          {/* الملاعب المغربية */}
+          {/* الملاعب */}
           <motion.section {...fadeInUp} className="mb-12">
-            <MoroccanStadiums onTrailSelect={onTrailSelect} />
+            <MoroccanStadiums />
           </motion.section>
 
-          {/* قسم إضافي للمحتوى المستقبلي */}
+          {/* محتوى إضافي */}
           <motion.section {...fadeInUp} className="mb-12">
             <div className="text-center py-12">
               <h3 className="text-2xl font-semibold text-gray-800 mb-4">محتوى إضافي قريباً</h3>
@@ -109,64 +77,55 @@ const FilteredSections = ({ onTrailSelect }: FilteredSectionsProps) => {
         </>
       ) : (
         <>
-         {/* عندما يتم اختيار فئة "البحر" */}
           {activeCategory === 'mountains' && (
             <motion.section {...fadeInUp} className="mb-12">
-              <MoroccanMountains onTrailSelect={onTrailSelect}/>
+              <MoroccanMountains />
             </motion.section>
           )}
 
-
-          {/* عندما يتم اختيار فئة "البحر" */}
           {activeCategory === 'sea' && (
             <motion.section {...fadeInUp} className="mb-12">
-              <MoroccanSea onTrailSelect={onTrailSelect}/>
+              <MoroccanSea />
             </motion.section>
           )}
 
-          {/* عندما يتم اختيار فئة "الطيران" */}
           {activeCategory === 'stadium' && (
             <motion.section {...fadeInUp} className="mb-12">
-              <MoroccanStadiums onTrailSelect={onTrailSelect} />
+              <MoroccanStadiums />
             </motion.section>
           )}
 
-          {/* عندما يتم اختيار فئة "جولات النهار" */}
+          {/* تأكد من Categories IDs واش متطابقين مع FilterContext */}
           {activeCategory === 'day_hikes' && (
             <motion.section {...fadeInUp} className="mb-12">
-              <MoroccanForests onTrailSelect={onTrailSelect} />
+              <MoroccanForests />
             </motion.section>
           )}
 
-          {/* عندما يتم اختيار فئة "السياحة في المدينة" */}
           {activeCategory === 'city_tourism' && (
             <motion.section {...fadeInUp} className="mb-12">
-              <MoroccanStadiums onTrailSelect={onTrailSelect} />
+              <MoroccanStadiums />
             </motion.section>
           )}
 
-          {/* عندما يتم اختيار فئة "النهر" */}
           {activeCategory === 'river' && (
             <motion.section {...fadeInUp} className="mb-12">
-              <MoroccanSea onTrailSelect={onTrailSelect}/>
+              <MoroccanSea />
             </motion.section>
           )}
 
-          {/* عندما يتم اختيار فئة "الغابة" */}
           {activeCategory === 'forest' && (
             <motion.section {...fadeInUp} className="mb-12">
-              <MoroccanForests onTrailSelect={onTrailSelect} />
+              <MoroccanForests />
             </motion.section>
           )}
 
-          {/* عندما يتم اختيار فئة "الصحراء" */}
           {activeCategory === 'desert' && (
             <motion.section {...fadeInUp} className="mb-12">
-              <MoroccanDeserts onTrailSelect={onTrailSelect} />
+              <MoroccanDeserts />
             </motion.section>
           )}
 
-          {/* عندما يتم اختيار فئة "الفلاتر" */}
           {activeCategory === 'filters' && (
             <motion.section {...fadeInUp} className="mb-12">
               <div className="text-center py-12">
@@ -181,19 +140,8 @@ const FilteredSections = ({ onTrailSelect }: FilteredSectionsProps) => {
 };
 
 export default function HomePage() {
-  const [selectedTrail, setSelectedTrail] = useState<Trail | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleTrailSelect = (trail: Trail) => {
-    setSelectedTrail(trail);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedTrail(null);
-  };
-
+  // حيدنا States ديال Modal
+  
   return (
     <FilterProvider>
       <div className="min-h-screen">
@@ -201,31 +149,27 @@ export default function HomePage() {
         <Header />
 
         <div className="relative z-10" style={{ marginTop: '100vh' }}>
-          <div className="bg-gradient-to-b from-[#87CEEB] to-white">
+          <div className="bg-white">
             <main className="max-w-7xl mx-auto px-4 pt-12 pb-12">
               <motion.div {...fadeInUp}>
                 <CategoryFilter />
               </motion.div>
 
-              {/* عرض الأقسام المصفاة مع تمرير دالة المودال */}
-              <FilteredSections onTrailSelect={handleTrailSelect} />
+              {/* مبقيناش كندوزو حتى دالة هنا */}
+              <FilteredSections />
             </main>
-          <motion.div {...fadeInUp}>
-            <TechPartners />
-          </motion.div>
+            
+            <motion.div {...fadeInUp}>
+              <TechPartners />
+            </motion.div>
 
-           <motion.div {...fadeInUp}>
+            <motion.div {...fadeInUp}>
               <Footer />
             </motion.div>
           </div>
         </div>
 
-        {/* ✅ المودال - تم إضافته هنا */}
-        <TrailModal 
-          trail={selectedTrail} 
-          isOpen={isModalOpen} 
-          onClose={handleCloseModal} 
-        />
+        {/* حيدنا TrailModal من هنا */}
       </div>
     </FilterProvider>
   );
